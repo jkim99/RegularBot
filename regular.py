@@ -4,19 +4,14 @@ it's anything bot
 """
 
 from datetime import datetime
+from reddit import REDDIT
+from spotify import SPOTIFY
 import discord
-import praw
 # import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1xig.klUPz5__kSkqWxHAoFWs_8KnjKo'
-reddit = praw.Reddit(
-    client_id='YBh9gOGQzW8GuQ',
-    client_secret='hVqgmeKxTqV7pzSgWuIUSlGjDZQ',
-    username='TheRegularBot',
-    password='@pple314',
-    user_agent='Regular Bot Mk01'
-)
-PREFIX = '!'
+BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY5iiw.-XRjaUZg3pb8e4rQcyy6J8cu1Vs'
+PREFIX = '.'
+reddit = REDDIT()
 
 
 class MyClient(discord.Client):
@@ -44,21 +39,23 @@ class MyClient(discord.Client):
         if message.content.startswith(PREFIX + 'ping'):
             await message.channel.send('pong!')
 
+        # Closes bot
+        if message.content.startswith(PREFIX + 'stop'):
+            await message.channel.send('Stopping...')
+            await self.logout()
+
         # Takes suggestions and writes it to a file
-        if message.content.startswith(PREFIX + 'suggestions'):
+        if message.content.startswith(PREFIX + 'suggestion'):
             file = open('suggestions.txt', 'a')
-            content = message.content.replace(PREFIX + 'suggestions', '')
+            content = message.content.replace(PREFIX + 'suggestion', '')
             file.write('\n{}{} [{}]'.format(t, content, str(message.author)))
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
+        # TODO: fix this shit
+        # Invokes meme from the reddit module
         if message.content.startswith(PREFIX + 'meme'):
-            dankmemes = reddit.subreddit('dankmemes').hot()
-            for post in dankmemes:
-                if post.id not in self.visited_posts:
-                    await message.channel.send(post.url)
-                    self.visited_posts.append(post.id)
-                    break
+            await message.channel.send(reddit.meme(message))
 
 
 def main():

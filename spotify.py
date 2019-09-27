@@ -1,3 +1,8 @@
+"""
+spotify.py
+The Spotify module.
+"""
+
 import spotipy
 
 
