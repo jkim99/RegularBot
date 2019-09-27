@@ -3,11 +3,12 @@ regular.py
 it's anything bot
 """
 
+from datetime import datetime
 import discord
 # import praw
 # import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1t3g.0D0wJdi5wznZS0d0NGcYonsDxkY'
+BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1xig.klUPz5__kSkqWxHAoFWs_8KnjKo'
 # reddit = praw.Reddit(
 #     client_id='',
 #     client_secret='',
@@ -25,6 +26,9 @@ class MyClient(discord.Client):
         print(self.user.id)
 
     async def on_message(self, message):
+        time = datetime.today().strftime('%Y-%m-%d-%H:%M')
+        log = open('log.txt', 'a')
+
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
             return
@@ -37,9 +41,9 @@ class MyClient(discord.Client):
         if message.content.startswith(PREFIX + 'suggestions'):
             file = open('suggestions.txt', 'a')
             content = message.content.replace(PREFIX + 'suggestions', '')
-            file.write('\n' + content)
+            file.write('\n{} {} [{}]', time, content, str(message.author))
             file.close()
-            await message.channel.send('Okay, \"{}\". Can do!'.format(content))
+            await message.channel.send('Thank you for the suggestion')
 
         # TODO Fix reddit bot
         # if message.content.startswith('_meme'):
