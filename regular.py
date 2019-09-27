@@ -61,5 +61,10 @@ class MyClient(discord.Client):
                     break
 
 
-client = MyClient()
-client.run(BOT_TOKEN)
+def main():
+    client = MyClient()
+    client.run(BOT_TOKEN)
+
+
+if __name__ == '__main__':
+    main()
