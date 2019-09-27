@@ -15,7 +15,7 @@ BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
 #     password='',
 #     user_agent=''
 # )
-TAG = '!'
+PREFIX = '!'
 
 
 class MyClient(discord.Client):
@@ -32,10 +32,10 @@ class MyClient(discord.Client):
             await message.channel.send('pong')
 
         # this takes suggestions and writes it to a file
-        if message.content.contains(TAG + "suggestions"):
+        if message.content.contains(PREFIX + "suggestions"):
             file = open("suggestions.txt", "w")
             content = message.content
-            file.append(content.replace(TAG + "suggestions", ""))
+            file.append(content.replace(PREFIX + "suggestions", ""))
             file.close()
 
         # TODO Fix reddit bot
