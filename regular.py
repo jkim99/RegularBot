@@ -10,11 +10,11 @@ import praw
 
 BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1xig.klUPz5__kSkqWxHAoFWs_8KnjKo'
 reddit = praw.Reddit(
-    client_id='',
-    client_secret='',
-    username='',
-    password='',
-    user_agent=''
+    client_id='YBh9gOGQzW8GuQ',
+    client_secret='hVqgmeKxTqV7pzSgWuIUSlGjDZQ',
+    username='TheRegularBot',
+    password='@pple314',
+    user_agent='Regular Bot Mk01'
 )
 PREFIX = '!'
 
