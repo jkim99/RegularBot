@@ -30,7 +30,10 @@ class MyClient(discord.Client):
         if message.author.id == self.user.id:
             return
 
+        # this line right here gets the time
         t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
+
+        # this adds the message to the log
         log = open('log.txt', 'a')
         log.write('{}{} {}'.format(t, message.content, str(message.author)))
         log.close()
