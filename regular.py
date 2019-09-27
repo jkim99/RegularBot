@@ -7,7 +7,7 @@ import discord
 # import praw
 # import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
+BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1t3g.0D0wJdi5wznZS0d0NGcYonsDxkY'
 # reddit = praw.Reddit(
 #     client_id='',
 #     client_secret='',
@@ -28,15 +28,18 @@ class MyClient(discord.Client):
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
             return
-        if message.content == '_ping':
-            await message.channel.send('pong')
 
-        # This takes suggestions and writes it to a file
-        if message.content.contains(PREFIX + "suggestions"):
-            file = open("suggestions.txt", "a")
-            content = message.content
-            file.write(content.replace(PREFIX + "suggestions", ""))
+        # Ping --> Pong
+        if message.content.startswith(PREFIX + 'ping'):
+            await message.channel.send('pong!')
+
+        # Takes suggestions and writes it to a file
+        if message.content.startswith(PREFIX + 'suggestions'):
+            file = open('suggestions.txt', 'a')
+            content = message.content.replace(PREFIX + 'suggestions', '')
+            file.write('\n' + content)
             file.close()
+            await message.channel.send('Okay, \"{}\". Can do!'.format(content))
 
         # TODO Fix reddit bot
         # if message.content.startswith('_meme'):
