@@ -9,8 +9,8 @@ from spotify import SPOTIFY
 import discord
 # import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1xig.klUPz5__kSkqWxHAoFWs_8KnjKo'
-PREFIX = '!'
+BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY5iiw.-XRjaUZg3pb8e4rQcyy6J8cu1Vs'
+PREFIX = '.'
 reddit = REDDIT()
 
 
@@ -39,17 +39,23 @@ class MyClient(discord.Client):
         if message.content.startswith(PREFIX + 'ping'):
             await message.channel.send('pong!')
 
+        # Closes bot
+        if message.content.startswith(PREFIX + 'stop'):
+            await message.channel.send('Stopping...')
+            await self.logout()
+
         # Takes suggestions and writes it to a file
-        if message.content.startswith(PREFIX + 'suggestions'):
+        if message.content.startswith(PREFIX + 'suggestion'):
             file = open('suggestions.txt', 'a')
-            content = message.content.replace(PREFIX + 'suggestions', '')
+            content = message.content.replace(PREFIX + 'suggestion', '')
             file.write('\n{}{} [{}]'.format(t, content, str(message.author)))
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
+        # TODO: fix this shit
         # Invokes meme from the reddit module
         if message.content.startswith(PREFIX + 'meme'):
-            reddit.command(message.content)
+            await message.channel.send(reddit.meme(message))
 
 
 client = MyClient()
