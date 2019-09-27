@@ -5,6 +5,7 @@ it's anything bot
 
 from datetime import datetime
 import discord
+from spotify import SPOTIFY
 # import praw
 # import random
 
@@ -24,16 +25,17 @@ class MyClient(discord.Client):
         print('Logged in as')
         print(self.user.name)
         print(self.user.id)
+        self.spotify = SPOTIFY()
 
     async def on_message(self, message):
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
             return
 
-        # this line right here gets the time
+        # gets the time
         t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
 
-        # this adds the message to the log
+        # adds the message to the log
         log = open('log.txt', 'a')
         log.write('{}{} {}'.format(t, message.content, str(message.author)))
         log.close()
@@ -50,6 +52,9 @@ class MyClient(discord.Client):
             file.close()
             await message.channel.send('Thank you for the suggestion!')
 
+        # Spotify
+        if message.content.startswith(PREFIX + 'spotify'):
+            self.spotify.command(message.content)
         # TODO Fix reddit bot
         # if message.content.startswith('_meme'):
         #     dankmemes = reddit.subreddit('dankmemes').hot(limit=100)
