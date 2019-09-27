@@ -32,7 +32,7 @@ class MyClient(discord.Client):
 
         t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
         log = open('log.txt', 'a')
-        log.write('{} {} {}'.format(t, message.content, str(message.author)))
+        log.write('{}{} {}'.format(t, message.content, str(message.author)))
         log.close()
 
         # Ping --> Pong
@@ -43,7 +43,7 @@ class MyClient(discord.Client):
         if message.content.startswith(PREFIX + 'suggestions'):
             file = open('suggestions.txt', 'a')
             content = message.content.replace(PREFIX + 'suggestions', '')
-            file.write('\n{} {} [{}]'.format(t, content, str(message.author)))
+            file.write('\n{}{} [{}]'.format(t, content, str(message.author)))
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
