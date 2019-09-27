@@ -33,9 +33,9 @@ class MyClient(discord.Client):
 
         # this takes suggestions and writes it to a file
         if message.content.contains(TAG + "suggestions"):
-            file = open("suggestions.txt")
+            file = open("suggestions.txt", "w")
             content = message.content
-            file.write(content.replace(TAG + "suggestions", ""))
+            file.append(content.replace(TAG + "suggestions", ""))
             file.close()
 
         # TODO Fix reddit bot
