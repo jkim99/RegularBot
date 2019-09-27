@@ -26,8 +26,10 @@ class MyClient(discord.Client):
         print(self.user.id)
 
     async def on_message(self, message):
-        time = datetime.today().strftime('%Y-%m-%d-%H:%M')
+        time = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
         log = open('log.txt', 'a')
+        log.write('{} {} {}', time, message.content, str(message.author))
+        log.close()
 
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
