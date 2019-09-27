@@ -26,14 +26,14 @@ class MyClient(discord.Client):
         print(self.user.id)
 
     async def on_message(self, message):
-        time = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
-        log = open('log.txt', 'a')
-        log.write('{} {} {}', time, message.content, str(message.author))
-        log.close()
-
         # we do not want the bot to reply to itself
         if message.author.id == self.user.id:
             return
+
+        t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
+        log = open('log.txt', 'a')
+        log.write('{} {} {}'.format(t, message.content, str(message.author)))
+        log.close()
 
         # Ping --> Pong
         if message.content.startswith(PREFIX + 'ping'):
@@ -43,7 +43,7 @@ class MyClient(discord.Client):
         if message.content.startswith(PREFIX + 'suggestions'):
             file = open('suggestions.txt', 'a')
             content = message.content.replace(PREFIX + 'suggestions', '')
-            file.write('\n{} {} [{}]', time, content, str(message.author))
+            file.write('\n{} {} [{}]'.format(t, content, str(message.author)))
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
