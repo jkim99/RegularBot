@@ -57,5 +57,10 @@ class MyClient(discord.Client):
             await message.channel.send(reddit.meme(message))
 
 
-client = MyClient()
-client.run(BOT_TOKEN)
+def main():
+    client = MyClient()
+    client.run(BOT_TOKEN)
+
+
+if __name__ == '__main__':
+    main()
