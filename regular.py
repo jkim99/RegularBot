@@ -8,6 +8,7 @@ from reddit import REDDIT
 # from spotify import SPOTIFY
 from creds import BOT_TOKEN
 import discord
+import os
 
 
 PREFIX = '.'
@@ -52,8 +53,10 @@ class MyClient(discord.Client):
             await message.channel.send('Thank you for the suggestion')
 
         # Gets meme from the reddit module
-        elif message.content.startswith(PREFIX + 'meme'):
-            await message.channel.send(self.reddit.meme(message))
+        if message.content.startswith(PREFIX + 'meme'):
+            filename = self.reddit.get_meme()
+            await message.channel.send(file=discord.File(filename))
+            os.remove(filename)
 
         # Plays music
         elif message.content.startswith(PREFIX + 'play'):
