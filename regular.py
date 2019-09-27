@@ -6,10 +6,10 @@ it's anything bot
 from datetime import datetime
 from reddit import REDDIT
 from spotify import SPOTIFY
+from creds import BOT_TOKEN
 import discord
-# import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY5iiw.-XRjaUZg3pb8e4rQcyy6J8cu1Vs'
+
 PREFIX = '.'
 reddit = REDDIT()
 
@@ -52,7 +52,6 @@ class MyClient(discord.Client):
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
-        # TODO: fix this shit
         # Invokes meme from the reddit module
         if message.content.startswith(PREFIX + 'meme'):
             await message.channel.send(reddit.meme(message))

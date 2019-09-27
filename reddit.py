@@ -4,17 +4,18 @@ the reddit module
 """
 import praw
 import urllib.request
+import creds as r
 
 
 class REDDIT():
     """docstring for REDDIT"""
     def __init__(self):
         self.reddit = praw.Reddit(
-            client_id='YBh9gOGQzW8GuQ',
-            client_secret='hVqgmeKxTqV7pzSgWuIUSlGjDZQ',
-            username='TheRegularBot',
-            password='@pple314',
-            user_agent='Regular Bot Mk01'
+            client_id=r.client_id,
+            client_secret=r.client_secret,
+            username=r.username,
+            password=r.password,
+            user_agent=r.user_agent
         )
         self.__load_visited__()
 
