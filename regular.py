@@ -48,7 +48,7 @@ class MyClient(discord.Client):
             content = message.content.replace(PREFIX + 'suggestions', '')
             file.write('\n{}{} [{}]'.format(t, content, str(message.author)))
             file.close()
-            await message.channel.send('Thank you for the suggestion')
+            await message.channel.send('Thank you for the suggestion!')
 
         # TODO Fix reddit bot
         # if message.content.startswith('_meme'):
