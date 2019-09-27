@@ -4,19 +4,14 @@ it's anything bot
 """
 
 from datetime import datetime
+from reddit import REDDIT
+from spotify import SPOTIFY
 import discord
-import praw
 # import random
 
 BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1xig.klUPz5__kSkqWxHAoFWs_8KnjKo'
-reddit = praw.Reddit(
-    client_id='YBh9gOGQzW8GuQ',
-    client_secret='hVqgmeKxTqV7pzSgWuIUSlGjDZQ',
-    username='TheRegularBot',
-    password='@pple314',
-    user_agent='Regular Bot Mk01'
-)
 PREFIX = '!'
+reddit = REDDIT()
 
 
 class MyClient(discord.Client):
@@ -52,13 +47,9 @@ class MyClient(discord.Client):
             file.close()
             await message.channel.send('Thank you for the suggestion')
 
+        # Invokes meme from the reddit module
         if message.content.startswith(PREFIX + 'meme'):
-            dankmemes = reddit.subreddit('dankmemes').hot()
-            for post in dankmemes:
-                if post.id not in self.visited_posts:
-                    await message.channel.send(post.url)
-                    self.visited_posts.append(post.id)
-                    break
+            reddit.command(message.content)
 
 
 client = MyClient()
