@@ -7,7 +7,9 @@ import discord
 # import praw
 # import random
 
-BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
+BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1pXQ.JqgB_6CvBmwMxC_41XNb00Yiwgs'
+TAG = '!'
+
 # reddit = praw.Reddit(
 #     client_id='',
 #     client_secret='',
@@ -15,7 +17,6 @@ BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
 #     password='',
 #     user_agent=''
 # )
-TAG = '!'
 
 
 class MyClient(discord.Client):
