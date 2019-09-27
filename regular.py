@@ -8,8 +8,6 @@ import discord
 # import random
 
 BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
-TAG = '!'
-
 # reddit = praw.Reddit(
 #     client_id='',
 #     client_secret='',
@@ -17,6 +15,7 @@ TAG = '!'
 #     password='',
 #     user_agent=''
 # )
+PREFIX = '!'
 
 
 class MyClient(discord.Client):
@@ -32,10 +31,11 @@ class MyClient(discord.Client):
         if message.content == '_ping':
             await message.channel.send('pong')
 
-        if message.content.contains(TAG + "suggestions"):
-            file = open("suggestions.txt")
+        # This takes suggestions and writes it to a file
+        if message.content.contains(PREFIX + "suggestions"):
+            file = open("suggestions.txt", "w")
             content = message.content
-            file.write(content.replace(TAG + "suggestions", ""))
+            file.append(content.replace(PREFIX + "suggestions", ""))
             file.close()
 
         # TODO Fix reddit bot
