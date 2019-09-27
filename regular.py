@@ -4,8 +4,8 @@ it's anything bot
 """
 
 import discord
-import praw
-import random
+# import praw
+# import random
 
 BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
 # reddit = praw.Reddit(
@@ -15,6 +15,7 @@ BOT_TOKEN = 'NjI2OTM2ODY4MzM1Nzc5ODY1.XY1XKQ.jOauRwP_eE7njBuLwnGKvbc51h4'
 #     password='',
 #     user_agent=''
 # )
+TAG = '!'
 
 
 class MyClient(discord.Client):
@@ -29,6 +30,12 @@ class MyClient(discord.Client):
             return
         if message.content == '_ping':
             await message.channel.send('pong')
+
+        if message.content.contains(TAG + "suggestions"):
+            file = open("suggestions.txt")
+            content = message.content
+            file.write(content.replace(TAG + "suggestions", ""))
+            file.close()
 
         # TODO Fix reddit bot
         # if message.content.startswith('_meme'):
