@@ -31,6 +31,7 @@ class MyClient(discord.Client):
         if message.content == '_ping':
             await message.channel.send('pong')
 
+        # this takes suggestions and writes it to a file
         if message.content.contains(TAG + "suggestions"):
             file = open("suggestions.txt")
             content = message.content
