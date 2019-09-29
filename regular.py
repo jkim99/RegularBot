@@ -7,65 +7,73 @@ from datetime import datetime
 from reddit import REDDIT
 # from spotify import SPOTIFY
 from creds import BOT_TOKEN
-import discord
+from discord.ext import commands
+from discord import opus
+from discord import File
 import os
 
 
 PREFIX = '.'
+client = commands.Bot(command_prefix=PREFIX)
+reddit = REDDIT()
 
 
-class MyClient(discord.Client):
-    visited_posts = []
+def log(message, author):
+    print(message)
+    t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
+    file = open('log.txt', 'a')
+    file.write('\n{} {} [{}]'.format(t, str(message), str(author)))
+    file.close()
 
-    async def on_ready(self):
-        self.reddit = REDDIT()
-        print('Logged in as' + self.user.name)
-        print('User ID: ' + self.user.id)
 
-    async def on_message(self, message):
-        # we do not want the bot to reply to itself
-        if message.author.id == self.user.id:
-            return
+@client.event
+async def on_ready():
+    print('Bot is ready!')
 
-        # this line right here gets the time
-        t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
 
-        # this adds the message to the log
-        log = open('log.txt', 'a')
-        log.write('{}{} {}\n'.format(t, message.content, str(message.author)))
-        log.close()
+@client.command(pass_context=True)
+async def ping(ctx):
+    log(ctx.message.content, ctx.message.author)
+    await ctx.send('pong!')
 
-        # Ping --> Pong
-        if message.content.startswith(PREFIX + 'ping'):
-            await message.channel.send('pong!')
 
-        # Closes bot
-        elif message.content.startswith(PREFIX + 'stop'):
-            await message.channel.send('Stopping...')
-            await self.logout()
+@client.command(pass_context=True)
+async def stop(ctx):
+    log(ctx.message.content, ctx.message.author)
+    await ctx.send('Stopping...')
+    await client.logout()
 
-        # Takes suggestions and writes it to a file
-        elif message.content.startswith(PREFIX + 'suggestion'):
-            file = open('suggestions.txt', 'a')
-            content = message.content.replace(PREFIX + 'suggestion', '')
-            file.write('\n{}{} [{}]'.format(t, content, str(message.author)))
-            file.close()
-            await message.channel.send('Thank you for the suggestion')
 
-        # Gets meme from the reddit module
-        if message.content.startswith(PREFIX + 'meme'):
-            filename = self.reddit.get_meme()
-            await message.channel.send(file=discord.File(filename))
-            os.remove(filename)
+@client.command(pass_context=True)
+async def suggestion(ctx):
+    log(ctx.message.content, ctx.message.author)
+    t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
+    file = open('suggestions.txt', 'a')
+    content = ctx.message.content.replace(PREFIX + 'suggestion', '')
+    file.write('\n{}{} [{}]'.format(t, content, str(ctx.message.author)))
+    file.close()
+    await ctx.send('Thank you for the suggestion!')
 
-        # Plays music
-        elif message.content.startswith(PREFIX + 'play'):
-            channel = self.get_channel('General')
-            await discord.VoiceChannel.connect(channel)
+
+# TODO: fix this shit
+@client.command(pass_context=True)
+async def meme(ctx):
+    filename = reddit.get_meme()
+    await ctx.send(file=File(filename))
+    os.remove(filename)
+
+
+# TODO: fix this shit too
+@client.command(pass_context=True)
+async def play(ctx, url):
+    channel = ctx.message.author.voice.channel
+    voice_client = await channel.connect()
+    player = await voice_client.create_ytdl_player(url)
+    player.start()
 
 
 def main():
-    client = MyClient()
+    # opus.load_opus('opus')
     client.run(BOT_TOKEN)
 
 
