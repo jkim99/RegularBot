@@ -3,6 +3,7 @@ This is the Regular Bot. It does regular things.
 
 # Dependencies
 `pip3 install discord`<br />
+`pip3 install PyNaCl`<br />
 `pip3 install praw`
 
 # Creditials
