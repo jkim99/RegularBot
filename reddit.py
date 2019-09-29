@@ -1,3 +1,5 @@
+#!/usr/bin/python3
+
 """
 reddit.py
 the reddit module
@@ -5,9 +7,10 @@ the reddit module
 import praw
 import urllib.request
 import creds as r
+import requests
 
 
-class REDDIT():
+class REDDIT:
     """docstring for REDDIT"""
     def __init__(self):
         self.reddit = praw.Reddit(
@@ -25,15 +28,35 @@ class REDDIT():
             v = f.readlines()
         self.visited_posts = [x.strip for x in v]
 
-    def meme(self, message):
-        dankmemes = self.reddit.subreddit('dankmemes').hot()
+    # Returns a meme as .png or .jpeg
+    def get_meme(self):
+        # Get posts and find one unread
+        dankmemes = self.reddit.subreddit('dankmemes').hot(limit=100)
         for post in dankmemes:
             if post.url not in self.visited_posts:
                 self.__add_visited__(post.url)
-                # page = urllib.request.urlopen(post.url)
-                # html = page.read().decode("utf8")
-                # image = self.__image_scrape__(html)
-                return post.url
+                image_url = post.url
+                break
+
+        # Filter image file types
+        if '.png' in image_url:
+            extension = '.png'
+        elif '.jpg' in image_url or '.jpeg' in image_url:
+            extension = '.jpeg'
+        elif 'imgur' in image_url:
+            image_url += 'jpeg'
+            extension = '.jpeg'
+        else:
+            return -1
+
+        # Get & return image. allow_redirects=False stops removed post images
+        image = requests.get(image_url, allow_redirects=False)
+        if image.status_code == 200:
+            with open('meme' + extension, mode='wb') as meme_file:
+                meme_file.write(image.content)
+            return 'meme' + extension
+        else:
+            return -2
 
     def __image_scrape__(self, html):
         html = html[html.index('i.redd.it'), len(html) - 1]
