@@ -5,7 +5,8 @@ This is the Regular Bot. It does regular things.
 `pip3 install discord`<br />
 `pip3 install PyNaCl`<br />
 `pip3 install praw`<br />
-`sudo apt install libopus0`
+`sudo apt install libopus0`<br />
+`sudo apt install ffmpeg`
 
 # Creditials
 You have to provide your own `creds.py` file. It must have the following:<br />
