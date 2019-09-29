@@ -21,7 +21,7 @@ class REDDIT():
 
     def __load_visited__(self):
         v = []
-        with open('memes/visited.txt') as f:
+        with open('visited.txt') as f:
             v = f.readlines()
         self.visited_posts = [x.strip for x in v]
 
