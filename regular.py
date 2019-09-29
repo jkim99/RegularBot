@@ -9,8 +9,6 @@ from creds import BOT_TOKEN
 from discord.ext import commands
 from discord import opus
 from discord import File
-# temp
-import discord
 import os
 
 

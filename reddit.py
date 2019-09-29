@@ -58,10 +58,6 @@ class REDDIT:
         else:
             return -2
 
-    def __image_scrape__(self, html):
-        html = html[html.index('i.redd.it'), len(html) - 1]
-        print(html)
-
     def __add_visited__(self, post_url):
         print("adding visited " + post_url)
         self.visited_posts.append(post_url)
