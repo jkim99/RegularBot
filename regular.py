@@ -59,6 +59,8 @@ async def suggestion(ctx):
 @client.command(pass_context=True)
 async def meme(ctx):
     filename = reddit.get_meme()
+    if filename < 0:
+        return
     await ctx.send(file=File(filename))
     os.remove(filename)
 

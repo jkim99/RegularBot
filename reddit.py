@@ -65,6 +65,6 @@ class REDDIT:
     def __add_visited__(self, post_url):
         print("adding visited " + post_url)
         self.visited_posts.append(post_url)
-        v = open('memes/visited.txt', 'a')
+        v = open('visited.txt', 'a')
         v.write(post_url + '\n')
         v.close()
