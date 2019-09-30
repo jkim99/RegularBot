@@ -56,7 +56,7 @@ class REDDIT:
                 meme_file.write(image.content)
             return 'meme' + extension
         else:
-            return -2
+            return -1
 
     def __image_scrape__(self, html):
         html = html[html.index('i.redd.it'), len(html) - 1]
