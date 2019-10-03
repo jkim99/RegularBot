@@ -7,7 +7,9 @@ This is the Regular Bot. It does regular things.
 `pip3 install praw`<br />
 `pip3 install youtube_dl`<br />
 `sudo apt install libopus0`<br />
-`sudo apt install ffmpeg`
+`sudo apt install ffmpeg`<br />
+`sudo apt install screen`<br />
+
 
 # Creditials
 You have to provide your own `creds.py` file. It must have the following:<br />
