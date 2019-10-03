@@ -58,7 +58,7 @@ class REDDIT:
                 meme_file.write(image.content)
             return 'meme' + extension
         else:
-            return -2
+            return -1
 
     def __add_visited__(self, post_url):
         print("adding visited " + post_url)

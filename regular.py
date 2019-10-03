@@ -13,7 +13,7 @@ from discord import opus
 from discord import File
 from discord import FFmpegPCMAudio as audio
 import os
-
+import random
 
 PREFIX = '&'  # for the beta bot
 client = commands.Bot(command_prefix=PREFIX)
@@ -37,6 +37,14 @@ async def on_ready():
 async def ping(ctx):
     log(ctx.message.content, ctx.message.author)
     await ctx.send('pong!')
+
+
+@client.command(pass_context=True)
+async def roll(ctx):
+    log(ctx.message.content, ctx.message.author)
+    result = int(random.random() * 100)
+    await ctx.send('Rolling out of 100...')
+    await ctx.send(result)
 
 
 @client.command(pass_context=True)
