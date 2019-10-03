@@ -4,19 +4,19 @@ it's anything bot
 """
 
 from datetime import datetime
-from reddit import REDDIT
-from youtube import YOUTUBE
-from creds import BOT_TOKEN
+from regular.reddit import REDDIT
+from regular.youtube import YOUTUBE
+from regular.creds import BOT_TOKEN
 from discord.ext import commands
 from discord.utils import get
 from discord import opus
 from discord import File
 from discord import FFmpegPCMAudio as audio
+import regular.config as config
 import os
 import random
 
-PREFIX = '&'  # for the beta bot
-client = commands.Bot(command_prefix=PREFIX)
+client = commands.Bot(command_prefix=config.PREFIX)
 reddit = REDDIT()
 youtube = YOUTUBE()
 
@@ -59,7 +59,7 @@ async def suggestion(ctx):
     log(ctx.message.content, ctx.message.author)
     t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
     file = open('suggestions.txt', 'a')
-    content = ctx.message.content.replace(PREFIX + 'suggestion', '')
+    content = ctx.message.content.replace(config.PREFIX + 'suggestion', '')
     file.write('\n{}{} [{}]'.format(t, content, str(ctx.message.author)))
     file.close()
     await ctx.send('Thank you for the suggestion!')
