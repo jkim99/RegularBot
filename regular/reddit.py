@@ -6,7 +6,7 @@ the reddit module
 """
 import praw
 import urllib.request
-import creds as r
+import regular.creds as r
 import requests
 
 
