@@ -6,19 +6,21 @@ the reddit module
 """
 import praw
 import urllib.request
-import creds as r
+import creds
 import requests
+import threading
+import time
 
 
 class REDDIT:
     """docstring for REDDIT"""
     def __init__(self):
         self.reddit = praw.Reddit(
-            client_id=r.client_id,
-            client_secret=r.client_secret,
-            username=r.username,
-            password=r.password,
-            user_agent=r.user_agent
+            client_id=creds.client_id,
+            client_secret=creds.client_secret,
+            username=creds.username,
+            password=creds.password,
+            user_agent=creds.user_agent
         )
         self.__load_visited__()
 
@@ -28,7 +30,7 @@ class REDDIT:
             v = f.readlines()
         self.visited_posts = [x.strip for x in v]
 
-    # Returns a meme as .png or .jpeg
+    # Returns a meme as .png or .jpeg, otherwise empty string ''
     def get_meme(self):
         # Get posts and find one unread
         dankmemes = self.reddit.subreddit('dankmemes').hot(limit=100)
@@ -47,7 +49,7 @@ class REDDIT:
             image_url += 'jpeg'
             extension = '.jpeg'
         else:
-            return -1
+            return ''
 
         # Get & return image. allow_redirects=False stops removed post images
         image = requests.get(image_url, allow_redirects=False)
@@ -56,7 +58,7 @@ class REDDIT:
                 meme_file.write(image.content)
             return 'meme' + extension
         else:
-            return -1
+            return ''
 
     def __add_visited__(self, post_url):
         print("adding visited " + post_url)
@@ -64,3 +66,26 @@ class REDDIT:
         v = open('visited.txt', 'a')
         v.write(post_url + '\n')
         v.close()
+
+
+    def meme_stream(self):
+        subreddit = self.reddit.subreddit('memes')
+        for post in subreddit.stream.submissions():
+            image_url = post.url
+            # Filter image file types
+            if '.png' in image_url:
+                extension = '.png'
+            elif '.jpg' in image_url or '.jpeg' in image_url:
+                extension = '.jpeg'
+            elif 'imgur' in image_url:
+                image_url += 'jpeg'
+                extension = '.jpeg'
+            else:
+                continue
+
+            image = requests.get(image_url, allow_redirects=False)
+            if image.status_code == 200:
+                with open('meme' + extension, mode='wb') as meme_file:
+                    meme_file.write(image.content)
+                yield 'meme' + extension
+

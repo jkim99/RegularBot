@@ -1,3 +1,4 @@
+#!/bin/bash
 """
 regular.py
 it's anything bot
@@ -13,9 +14,10 @@ from discord import FFmpegPCMAudio as audio
 import os
 import youtube_dl
 import random
+import threading
 
 
-PREFIX = '.'
+PREFIX = '_'
 client = commands.Bot(command_prefix=PREFIX)
 reddit = REDDIT()
 youtube_queue = []
@@ -44,7 +46,7 @@ async def roll(ctx):
     log(ctx.message.content, ctx.message.author)
     result = int(random.random() * 100)
     await ctx.send('Rolling out of 100...')
-    await ctx.send(result)
+    await ctx.send(ctx.author.display_name + ' rolls a ' + str(result))
 
 
 @client.command(pass_context=True)
@@ -65,12 +67,32 @@ async def suggestion(ctx):
     await ctx.send('Thank you for the suggestion!')
 
 
+# A thread class that continuously prints memes
+class MemeThread(threading.Thread, ctx, reddit):
+    interval = 1  # Time interval between memes in seconds
+
+    def run(self):
+        filename = reddit.get_meme()
+        while filename == '':
+            filename = reddit.get_meme()
+        await ctx.send(file=File(filename))
+        os.remove(filename)
+
+
 @client.command(pass_context=True)
 async def meme(ctx):
     log(ctx.message.content, ctx.message.author)
     filename = reddit.get_meme()
+    while filename == '':
+        filename = reddit.get_meme()
     await ctx.send(file=File(filename))
     os.remove(filename)
+
+
+@client.command(pass_context=True)
+async def memestream(ctx):
+    meme_thread = MemeThread(ctx, reddit)
+    meme_thread.start()
 
 
 @client.command(pass_context=True)
