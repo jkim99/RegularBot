@@ -124,11 +124,14 @@ async def clanmembers(ctx):
     )
     if 200 <= response.status_code <= 299:
         r_json = response.json()
-        await ctx.send('Clan members:')
+        message = '\n ::: Clan members :::\n'
         for member in r_json['items']:
-            await ctx.send('Name: {}, Trophies: {}, Donation ratio: {}'.format(
-
-            ))
+            message += 'Name: {}, Trophies: {}, Donation ratio: {}\n'.format(
+                        member['name'],
+                        member['trophies'],
+                        member['donations'] / member['donationsReceived']
+            )
+        await ctx.send(message)
     else:
         await ctx.send('Response error')
 
