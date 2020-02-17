@@ -7,6 +7,7 @@ it's anything bot
 from datetime import datetime
 from reddit import REDDIT
 from creds import BOT_TOKEN
+from creds import CLASH_API_KEY
 from discord.ext import commands
 from discord import opus
 from discord import File
@@ -15,6 +16,7 @@ import os
 import youtube_dl
 import random
 import threading
+import requests
 
 
 PREFIX = '_'
@@ -67,18 +69,6 @@ async def suggestion(ctx):
     await ctx.send('Thank you for the suggestion!')
 
 
-# A thread class that continuously prints memes
-class MemeThread(threading.Thread, ctx, reddit):
-    interval = 1  # Time interval between memes in seconds
-
-    def run(self):
-        filename = reddit.get_meme()
-        while filename == '':
-            filename = reddit.get_meme()
-        await ctx.send(file=File(filename))
-        os.remove(filename)
-
-
 @client.command(pass_context=True)
 async def meme(ctx):
     log(ctx.message.content, ctx.message.author)
@@ -87,12 +77,6 @@ async def meme(ctx):
         filename = reddit.get_meme()
     await ctx.send(file=File(filename))
     os.remove(filename)
-
-
-@client.command(pass_context=True)
-async def memestream(ctx):
-    meme_thread = MemeThread(ctx, reddit)
-    meme_thread.start()
 
 
 @client.command(pass_context=True)
@@ -125,6 +109,55 @@ async def play(ctx):
                 youtube_queue.pop()
         except PermissionError:
             pass
+
+
+@client.command(pass_context=True, aliases=['members'])
+async def clanmembers(ctx):
+    log(ctx.message.content, ctx.message.author)
+    headers = {
+        'Accept': 'application/json',
+        'authorization': 'Bearer {}'.format(CLASH_API_KEY)
+    }
+    response = requests.get(
+        'https://api.clashofclans.com/v1/clans/%232PCQRQVY/members',
+        headers=headers
+    )
+    if 200 <= response.status_code <= 299:
+        r_json = response.json()
+        await ctx.send('Clan members:')
+        for member in r_json['items']:
+            await ctx.send('Name: {}, Trophies: {}, Donation ratio: {}'.format(
+
+            ))
+    else:
+        await ctx.send('Response error')
+
+
+@client.command(pass_context=True, aliases=['war'])
+async def clanwar(ctx):
+    log(ctx.message.content, ctx.message.author)
+    headers = {
+        'Accept': 'application/json',
+        'authorization': 'Bearer {}'.format(CLASH_API_KEY)
+    }
+    response = requests.get(
+        'https://api.clashofclans.com/v1/clans/%232PCQRQVY/currentwar',
+        headers=headers
+    )
+    if 200 <= response.status_code <= 299:
+        r_json = response.json()
+        if r_json['state'] == 'inWar':
+            await ctx.send(
+                'War is live! {} - {} VS {} - {}'.format(
+                    r_json['clan']['name'],
+                    r_json['clan']['stars'],
+                    r_json['opponent']['name'],
+                    r_json['opponent']['stars']
+                ))
+        else:
+            await ctx.send('There is no war taking place right now.')
+    else:
+        await ctx.send('Response error')
 
 
 @client.command(pass_context=True, aliases=['que', 'q'])

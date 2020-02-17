@@ -67,7 +67,6 @@ class REDDIT:
         v.write(post_url + '\n')
         v.close()
 
-
     def meme_stream(self):
         subreddit = self.reddit.subreddit('memes')
         for post in subreddit.stream.submissions():
@@ -88,4 +87,5 @@ class REDDIT:
                 with open('meme' + extension, mode='wb') as meme_file:
                     meme_file.write(image.content)
                 yield 'meme' + extension
+            time.sleep(1)
 

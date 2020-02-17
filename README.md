@@ -9,7 +9,7 @@ This is the Regular Bot. It does regular things.
 `sudo apt install libopus0`<br />
 `sudo apt install ffmpeg`
 
-# Creditials
+# Credentials
 You have to provide your own `creds.py` file. It must have the following:<br />
 `BOT_TOKEN = '[bot token]'`<br />
 `# reddit creds`<br />
