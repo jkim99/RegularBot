@@ -5,24 +5,25 @@ it's anything bot
 """
 
 from datetime import datetime
-from reddit import REDDIT
-from creds import BOT_TOKEN
-from creds import CLASH_API_KEY
+from regular.reddit import REDDIT
+from regular.youtube import YOUTUBE
+from regular.creds import BOT_TOKEN
+from regular.creds import CLASH_API_KEY
 from discord.ext import commands
+from discord.utils import get
 from discord import opus
 from discord import File
 from discord import FFmpegPCMAudio as audio
+import regular.config as config
 import os
-import youtube_dl
 import random
-import threading
 import requests
 
 
 PREFIX = '_'
-client = commands.Bot(command_prefix=PREFIX)
+client = commands.Bot(command_prefix=config.PREFIX)
 reddit = REDDIT()
-youtube_queue = []
+youtube = YOUTUBE()
 
 
 def log(message, author):
@@ -63,14 +64,14 @@ async def suggestion(ctx):
     log(ctx.message.content, ctx.message.author)
     t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
     file = open('suggestions.txt', 'a')
-    content = ctx.message.content.replace(PREFIX + 'suggestion', '')
+    content = ctx.message.content.replace(config.PREFIX + 'suggestion', '')
     file.write('\n{}{} [{}]'.format(t, content, str(ctx.message.author)))
     file.close()
     await ctx.send('Thank you for the suggestion!')
 
 
 @client.command(pass_context=True)
-async def meme(ctx):
+async def meme(ctx, subreddit='dankmemes'):
     log(ctx.message.content, ctx.message.author)
     filename = reddit.get_meme()
     while filename == '':
@@ -80,35 +81,28 @@ async def meme(ctx):
 
 
 @client.command(pass_context=True)
-async def play(ctx):
+async def play(ctx, url=None):
     log(ctx.message.content, ctx.message.author)
+
+    # joining channel
     channel = ctx.message.author.voice.channel
-    voice = await channel.connect()
-    while True:
-        song_there = os.path.isfile("song.mp3")
-        try:
-            if song_there:
-                os.remove("song.mp3")
-            else:
-                ydl_opts = {
-                    'format': 'bestaudio/best',
-                    'postprocessors': [{
-                        'key': 'FFmpegExtractAudio',
-                        'preferredcodec': 'mp3',
-                        'preferredquality': '192',
-                    }],
-                }
-                with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-                    ydl.download([youtube_queue[0]])
-                for file in os.listdir("./"):
-                    if file.endswith(".mp3"):
-                        os.rename(file, 'song.mp3')
-                voice.play(audio("song.mp3"))
-                voice.volume = 100
-                voice.is_playing()
-                youtube_queue.pop()
-        except PermissionError:
-            pass
+    if not channel:
+        await ctx.send("You must be connected to a voice channel")
+        return
+    voice = get(client.voice_clients, guild=ctx.guild)
+    if voice and voice.is_connected():
+        await voice.move_to(channel)
+    else:
+        voice = await channel.connect()
+
+    # queues url if it exists
+    if url:
+        youtube.queue_song(url)
+
+    # downloads and plays the song
+    voice.play(audio(youtube.download()))
+    voice.volume = 100
+    voice.is_playing()
 
 
 @client.command(pass_context=True, aliases=['members'])
@@ -166,12 +160,15 @@ async def clanwar(ctx):
 @client.command(pass_context=True, aliases=['que', 'q'])
 async def queue(ctx, url):
     log(ctx.message.content, ctx.message.author)
-    youtube_queue.append(url)
+    youtube.queue_song(url)
 
 
 @client.command(pass_context=True)
 async def stop(ctx):
     log(ctx.message.content, ctx.message.author)
+    voice = get(client.voice_clients, guild=ctx.guild)
+    if voice and voice.is_connected():
+        await voice.disconnect()
 
 
 def main():

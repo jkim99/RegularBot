@@ -5,10 +5,8 @@ reddit.py
 the reddit module
 """
 import praw
-import urllib.request
-import creds
+from regular import creds
 import requests
-import threading
 import time
 
 
@@ -22,18 +20,20 @@ class REDDIT:
             password=creds.password,
             user_agent=creds.user_agent
         )
+        self.visited_posts = []
         self.__load_visited__()
 
     def __load_visited__(self):
         v = []
         with open('visited.txt') as f:
             v = f.readlines()
-        self.visited_posts = [x.strip for x in v]
+        for line in v:
+            self.visited_posts.append(line.strip())
 
-    # Returns a meme as .png or .jpeg, otherwise empty string ''
-    def get_meme(self):
+    # Returns a meme as .png or .jpeg
+    def get_meme(self, subreddit='dankmemes'):
         # Get posts and find one unread
-        dankmemes = self.reddit.subreddit('dankmemes').hot(limit=100)
+        dankmemes = self.reddit.subreddit(subreddit).hot(limit=100)
         for post in dankmemes:
             if post.url not in self.visited_posts:
                 self.__add_visited__(post.url)

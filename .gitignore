@@ -1,3 +1,4 @@
 *.txt
-creds.py
+*.mp3
+regular/creds.py
 __pycache__
