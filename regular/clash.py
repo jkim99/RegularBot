@@ -24,9 +24,42 @@ class CLASHOFCLANS:
         return None
 
     def get_clan_members(self):
+        """
+        :return: String of members or error details
+        """
         response = self._make_request(
             API_LINK + "/clans/{}/members".format(CLAN_CODE))
         if response is None:
             # error sending response
-            return None
-        return response["items"]
+            return "Response Error"
+        members = response.get("items")
+        if response is None:
+            return "Response Error"
+        if len(members) == 0:
+            return "Nobody is in our clan!"
+        message = "\n --- Clan members --- \n"
+        for memb in members:
+            message += "Name: {}, Trophies: {}, Donations: {}\n".format(
+                memb["name"],
+                memb["trophies"],
+                memb["donations"])
+        return message
+
+    def get_war_details(self):
+        """
+        :return: String of current war details or error details
+        """
+        response = self._make_request(
+            API_LINK + "/clans/{}/currentwar".format(CLAN_CODE))
+        if response is None:
+            # error sending response
+            return "Response Error"
+        if response["state"] == "inWar":
+            message = "War is live! {} - {} VS {} - {}".format(
+                        response["clan"]["name"],
+                        response["clan"]["stars"],
+                        response["opponent"]["name"],
+                        response["opponent"]["stars"])
+        else:
+            message = "Clan not at War"
+        return message

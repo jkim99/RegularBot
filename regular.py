@@ -109,43 +109,13 @@ async def play(ctx, url=None):
 @client.command(pass_context=True, aliases=["clan"])
 async def clanmembers(ctx):
     log(ctx.message.content, ctx.message.author)
-    members = clash.get_clan_members()
-    if members is None:
-        await ctx.send("Response Error")
-        return
-    if len(members) == 0:
-        return
-    message = "\n --- Clan members --- \n"
-    for memb in members:
-        message += "Name: {}, Trophies: {}, Donations: {}\n".format(
-            memb["name"],
-            memb["trophies"],
-            memb["donations"])
-    await ctx.send(message)
+    await ctx.send(clash.get_clan_members())
 
 
 @client.command(pass_context=True, aliases=['war'])
 async def clanwar(ctx):
     log(ctx.message.content, ctx.message.author)
-
-    response = requests.get(
-        'https://api.clashofclans.com/v1/clans/%232PCQRQVY/currentwar',
-        headers=headers
-    )
-    if 200 <= response.status_code <= 299:
-        r_json = response.json()
-        if r_json['state'] == 'inWar':
-            await ctx.send(
-                'War is live! {} - {} VS {} - {}'.format(
-                    r_json['clan']['name'],
-                    r_json['clan']['stars'],
-                    r_json['opponent']['name'],
-                    r_json['opponent']['stars']
-                ))
-        else:
-            await ctx.send('There is no war taking place right now.')
-    else:
-        await ctx.send('Response error')
+    await ctx.send(clash.get_war_details())
 
 
 @client.command(pass_context=True, aliases=['que', 'q'])
