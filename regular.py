@@ -7,6 +7,7 @@ it's anything bot
 from datetime import datetime
 from regular.reddit import REDDIT
 from regular.youtube import YOUTUBE
+from regular.clash import CLASHOFCLANS
 from regular.creds import BOT_TOKEN
 from regular.creds import CLASH_API_KEY
 from discord.ext import commands
@@ -20,10 +21,10 @@ import random
 import requests
 
 
-PREFIX = '_'
 client = commands.Bot(command_prefix=config.PREFIX)
 reddit = REDDIT()
 youtube = YOUTUBE()
+clash = CLASHOFCLANS()
 
 
 def log(message, author):
@@ -105,36 +106,28 @@ async def play(ctx, url=None):
     voice.is_playing()
 
 
-@client.command(pass_context=True, aliases=['members'])
+@client.command(pass_context=True, aliases=["clan"])
 async def clanmembers(ctx):
     log(ctx.message.content, ctx.message.author)
-    headers = {
-        'Accept': 'application/json',
-        'authorization': 'Bearer {}'.format(CLASH_API_KEY)
-    }
-    response = requests.get(
-        'https://api.clashofclans.com/v1/clans/%232PCQRQVY/members',
-        headers=headers
-    )
-    if 200 <= response.status_code <= 299:
-        r_json = response.json()
-        message = '\n ::: Clan members :::\n'
-        for member in r_json['items']:
-            message += 'Name: {}, Trophies: {}, Donation ratio: {}\n'.format(
-                        member['name'],
-                        member['trophies'],
-                        member['donations'] / member['donationsReceived']
-            )
-        await ctx.send(message)
-    else:
-        await ctx.send('Response error')
+    members = clash.get_clan_members()
+    if members is None:
+        await ctx.send("Response Error")
+        return
+    if len(members) == 0:
+        return
+    message = "\n --- Clan members --- \n"
+    for memb in members:
+        message += "Name: {}, Trophies: {}, Donations: {}\n".format(
+            memb["name"],
+            memb["trophies"],
+            memb["donations"])
+    await ctx.send(message)
 
 
 @client.command(pass_context=True, aliases=['war'])
 async def clanwar(ctx):
     log(ctx.message.content, ctx.message.author)
-    headers = {'Accept': 'application/json',
-               'authorization': 'Bearer {}'.format(CLASH_API_KEY)}
+
     response = requests.get(
         'https://api.clashofclans.com/v1/clans/%232PCQRQVY/currentwar',
         headers=headers
