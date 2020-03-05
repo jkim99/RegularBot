@@ -7,9 +7,12 @@ class YOUTUBE:
         self.queue = []
 
     def queue_song(self, url):
-        self.queue.append(url)
+        self.queue.append(self.download(url))
 
-    def download(self):
+    def pop_queue(self):
+        return self.queue.pop()
+
+    def download(self, url):
         ydl_opts = {
             'format': 'bestaudio/best',
             'postprocessors': [{
@@ -19,7 +22,7 @@ class YOUTUBE:
             }],
         }
         with youtube_dl.YoutubeDL(ydl_opts) as ydl:
-            ydl.download([self.queue.pop()])
+            ydl.download([url])
         for file in os.listdir('./'):
             if file.endswith('.mp3'):
                 return str(file)
@@ -28,6 +31,9 @@ class YOUTUBE:
         for file in os.listdir('./'):
             if file.endswith('.mp3'):
                 os.remove(file)
+
+    def print_queue(self):
+        return str(self.queue)
 
 
 if __name__ == '__main__':
