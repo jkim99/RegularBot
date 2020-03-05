@@ -1,1 +1,1 @@
-PREFIX = '&'  # for the beta bot
+PREFIX = '_'  # for the beta bot
