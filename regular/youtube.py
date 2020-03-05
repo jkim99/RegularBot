@@ -32,6 +32,6 @@ class YOUTUBE():
 
 if __name__ == '__main__':
     y = YOUTUBE()
-    y.queue_song('https://www.youtube.com/watch?v=iW06RYlooGc')
+    y.queue_song('https://www.youtube.com/watch?v=sf7CXcpJTj0')
     y.download()
     y.clear_mp3()
