@@ -4,13 +4,12 @@ the Clash of Clans module
 """
 
 import requests
-import datetime
 import arrow
 from regular import creds
+from regular.config import TIMEZONE
 
 API_LINK = "https://api.clashofclans.com/v1"
 CLAN_CODE = "%232PCQCRQVY"
-TIMEZONE = "America/New_York"
 
 
 def _get_time_until(datetime_iso):
@@ -65,7 +64,6 @@ class CLASHOFCLANS:
         response = self._make_request(
             API_LINK + "/clans/{}/currentwar".format(CLAN_CODE))
         if response is None:
-            # error sending response
             return "Response Error"
         if response["state"] == "inWar":
             message = "War is live! {} - {} VS {} - {}\nWar ends {}".format(
