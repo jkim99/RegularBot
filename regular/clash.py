@@ -4,10 +4,23 @@ the Clash of Clans module
 """
 
 import requests
+import datetime
+import arrow
 from regular import creds
 
 API_LINK = "https://api.clashofclans.com/v1"
 CLAN_CODE = "%232PCQCRQVY"
+TIMEZONE = "America/New_York"
+
+
+def _get_time_until(datetime_iso):
+    """
+    :param datetime_iso: ISO 8601 - formatted datetime from API response
+    :return: string denoting the time until this event
+    """
+    return arrow.get(datetime_iso).to(TIMEZONE).humanize(
+        arrow.utcnow().to(TIMEZONE),
+        granularity=["hour", "minute"])
 
 
 class CLASHOFCLANS:
@@ -55,11 +68,15 @@ class CLASHOFCLANS:
             # error sending response
             return "Response Error"
         if response["state"] == "inWar":
-            message = "War is live! {} - {} VS {} - {}".format(
+            message = "War is live! {} - {} VS {} - {}\nWar ends {}".format(
                         response["clan"]["name"],
                         response["clan"]["stars"],
                         response["opponent"]["name"],
-                        response["opponent"]["stars"])
+                        response["opponent"]["stars"],
+                        _get_time_until(response["endTime"]))
+        elif response["state"] == "preparation":
+            message = "Preparation Day ends {}".format(
+                _get_time_until(response["startTime"]))
         else:
             message = "Clan not at War"
         return message
