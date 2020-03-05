@@ -6,6 +6,7 @@ This is the Regular Bot. It does regular things.
 ## Essential
 `pip3 install discord`<br />
 `pip3 install PyNaCl`<br />
+`pip3 install requests`<br />
 `sudo apt install screen`<br />
 
 ## Reddit
@@ -15,6 +16,9 @@ This is the Regular Bot. It does regular things.
 `pip3 install youtube_dl`<br />
 `sudo apt install libopus0`<br />
 `sudo apt install ffmpeg`<br />
+
+## Clash of Clans
+`pip3 install arrow`<br />
 
 
 # Credentials
