@@ -2,9 +2,15 @@
 This is the Regular Bot. It does regular things.
 
 # Dependencies
+
+## Discord
 `pip3 install discord`<br />
 `pip3 install PyNaCl`<br />
+
+## Reddit
 `pip3 install praw`<br />
+
+## Youtube
 `pip3 install youtube_dl`<br />
 `sudo apt install libopus0`<br />
 `sudo apt install ffmpeg`<br />
