@@ -80,6 +80,7 @@ async def suggestion(ctx):
 async def listqueue(ctx):
     await ctx.send(youtube.print_queue())
 
+
 @client.command(pass_context=True)
 async def meme(ctx, subreddit='dankmemes'):
     log(ctx.message.content, ctx.message.author)
@@ -113,7 +114,7 @@ async def queue(ctx, url=None):
     if url:
         youtube.queue_song(url)
     else:
-        await ctx.send(f"Usage: {config.PREFIX}play [youtube url]")
+        await ctx.send(f"Usage: `{config.PREFIX}play [youtube url]`")
         return
 
     # plays the song
@@ -132,16 +133,15 @@ async def skip(ctx):
     voice.play(audio(song))
     
 
-@client.command(pass_context=True, aliases=["clan"])
-async def clanmembers(ctx):
+@client.command(pass_context=True)
+async def clan(ctx, param=None):
     log(ctx.message.content, ctx.message.author)
-    await ctx.send(clash.get_clan_members())
-
-
-@client.command(pass_context=True, aliases=['war'])
-async def clanwar(ctx):
-    log(ctx.message.content, ctx.message.author)
-    await ctx.send(clash.get_war_details())
+    if param == "war":
+        await ctx.send(clash.get_war_details())
+    elif param == "members":
+        await ctx.send(clash.get_clan_members())
+    else:
+        await ctx.send(f"Usage: `{config.PREFIX}clan [war/members]`")
 
 
 @client.command(pass_context=True)
