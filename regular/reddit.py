@@ -1,5 +1,3 @@
-#!/usr/bin/python3
-
 """
 reddit.py
 the reddit module
@@ -13,13 +11,11 @@ import time
 class REDDIT:
     """docstring for REDDIT"""
     def __init__(self):
-        self.reddit = praw.Reddit(
-            client_id=creds.client_id,
-            client_secret=creds.client_secret,
-            username=creds.username,
-            password=creds.password,
-            user_agent=creds.user_agent
-        )
+        self.reddit = praw.Reddit(client_id=creds.REDDIT_CLIENT_ID,
+                                  client_secret=creds.REDDIT_CLIENT_SECRET,
+                                  username=creds.REDDIT_USERNAME,
+                                  password=creds.REDDIT_PASSWORD,
+                                  user_agent=creds.REDDIT_USER_AGENT)
         self.visited_posts = []
         self.__load_visited__()
 

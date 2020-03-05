@@ -2,7 +2,7 @@ import youtube_dl
 import os
 
 
-class YOUTUBE():
+class YOUTUBE:
     def __init__(self):
         self.queue = []
 

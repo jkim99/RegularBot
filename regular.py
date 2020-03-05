@@ -133,10 +133,8 @@ async def clanmembers(ctx):
 @client.command(pass_context=True, aliases=['war'])
 async def clanwar(ctx):
     log(ctx.message.content, ctx.message.author)
-    headers = {
-        'Accept': 'application/json',
-        'authorization': 'Bearer {}'.format(CLASH_API_KEY)
-    }
+    headers = {'Accept': 'application/json',
+               'authorization': 'Bearer {}'.format(CLASH_API_KEY)}
     response = requests.get(
         'https://api.clashofclans.com/v1/clans/%232PCQRQVY/currentwar',
         headers=headers
