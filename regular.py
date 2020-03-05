@@ -11,7 +11,7 @@ from regular.creds import BOT_TOKEN
 from regular.creds import CLASH_API_KEY
 from discord.ext import commands
 from discord.utils import get
-from discord import opus
+# from discord import opus
 from discord import File
 from discord import FFmpegPCMAudio as audio
 import regular.config as config
@@ -170,8 +170,8 @@ async def stop(ctx):
 
 
 def main():
-    if not opus.is_loaded():
-        opus.load_opus('opus')
+    # if not opus.is_loaded():
+    #     opus.load_opus('opus')
     client.run(BOT_TOKEN)
 
 

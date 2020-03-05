@@ -21,8 +21,12 @@ class REDDIT:
 
     def __load_visited__(self):
         v = []
-        with open('visited.txt') as f:
-            v = f.readlines()
+        try:
+            with open('visited.txt') as f:
+                v = f.readlines()
+        except FileNotFoundError:
+            with open('visited.txt', 'w'):
+                return
         for line in v:
             self.visited_posts.append(line.strip())
 
@@ -44,6 +48,8 @@ class REDDIT:
         elif 'imgur' in image_url:
             image_url += 'jpeg'
             extension = '.jpeg'
+        elif '.gif' in image_url:
+            extension = '.gif'
         else:
             return ''
 
@@ -75,6 +81,8 @@ class REDDIT:
             elif 'imgur' in image_url:
                 image_url += 'jpeg'
                 extension = '.jpeg'
+            elif '.gif' in image_url:
+                extension = '.gif'
             else:
                 continue
 
