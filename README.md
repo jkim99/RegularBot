@@ -21,11 +21,12 @@ This is the Regular Bot. It does regular things.
 `pip3 install arrow`<br />
 
 ## Postgres
-You must install Postgres on your system.
-Once installed, verify that $PATH contains the path to pg_config:
-`which pg_config`
-If you don't see the resulting path to pg_config you will need to set it manually, but it varies by installation.
-My Postgres.app installation for MacOS was located in: `/Applications/Postgres.app/Contents/Versions/12/bin/`
+You must install Postgres on your system. <br />
+Once installed, verify that $PATH contains the path to pg_config: <br />
+`which pg_config` <br />
+If you don't see the resulting path to pg_config you will need to set it manually, but it varies by installation. <br />
+My Postgres.app installation for MacOS was located in: `/Applications/Postgres.app/Contents/Versions/12/bin/` <br />
+You will need to run something similar to: <br />
 `export PATH=/Applications/Postgres.app/Contents/Versions/12/bin/:$PATH` <br />
 
 # Credentials
