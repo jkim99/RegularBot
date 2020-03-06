@@ -20,6 +20,13 @@ This is the Regular Bot. It does regular things.
 ## Clash of Clans
 `pip3 install arrow`<br />
 
+## Postgres
+You must install Postgres on your system.
+Once installed, verify that $PATH contains the path to pg_config:
+`which pg_config`
+If you don't see the resulting path to pg_config you will need to set it manually, but it varies by installation.
+My Postgres.app installation for MacOS was located in: `/Applications/Postgres.app/Contents/Versions/12/bin/`
+`export PATH=/Applications/Postgres.app/Contents/Versions/12/bin/:$PATH` <br />
 
 # Credentials
 You have to provide your own `creds.py` file. It must have the following:<br />
