@@ -1,21 +1,29 @@
 # Regular Bot
 This is the Regular Bot. It does regular things.
 
-# Dependencies
+## Requirements
+1. Python 3
+2. Screen  
+`sudo apt install screen`
 
-## Essential
-`pip3 install discord`<br />
-`pip3 install PyNaCl`<br />
-`pip3 install requests`<br />
-`sudo apt install screen`<br />
+## Dependencies
+The bot uses the following Python packages. Versions can be found in `requirements.txt`  
+- discord
+- PyNaCl
+- requests
+- praw
+- youtube_dl
 
-## Reddit
-`pip3 install praw`<br />
-
-## Youtube
-`pip3 install youtube_dl`<br />
-`sudo apt install libopus0`<br />
-`sudo apt install ffmpeg`<br />
+## Setup
+If Python 3 is successfully installed, you can set up the bot as follows:
+1. Clone the git repository  
+`git clone <url>`
+2. Change to the root directory and create a virtual environment  
+`cd RegularBot`  
+`python3 -m venv venv`
+3. Activate the virtual environment and install dependencies.  
+`. venv/bin/activate`  
+`pip install -r requirements.txt`
 
 ## Clash of Clans
 `pip3 install arrow`<br />
