@@ -1,4 +1,5 @@
 *.mp3
-regular/creds.py
+modules/creds.py
 __pycache__
 venv
+myconfig.yaml

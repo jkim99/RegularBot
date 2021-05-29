@@ -1,0 +1,20 @@
+# Bot Config
+
+command_prefix: "_"
+timezone: "America/New_York"
+
+discord:
+  bot_token: ""
+
+reddit:
+  client_id: ""
+  client_secret: ""
+  username: ""
+  password: ""
+  user_agent: ""
+
+postgres:
+  username: ""
+  password: ""
+  hostname: ""
+  db_name: ""

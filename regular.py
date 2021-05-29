@@ -1,38 +1,37 @@
-#!/bin/bash
 """
-regular.py
+modules.py
 it's anything bot
 """
 
 from datetime import datetime
-from regular.reddit import REDDIT
-from regular.youtube import YOUTUBE
-from regular.clash import CLASHOFCLANS
-from regular.creds import BOT_TOKEN
-from regular.creds import CLASH_API_KEY
+from modules.reddit import REDDIT
+from modules.youtube import YOUTUBE
 from discord.ext import commands
 from discord.utils import get
-# from discord import opus
 from discord import File
-from discord import FFmpegPCMAudio as audio
-import asyncio
-import regular.config as config
+from discord import FFmpegPCMAudio
 import os
+import sys
 import random
-import requests
+import yaml
 
+# Load config from input file
+if ".yaml" not in sys.argv[1] and ".yml" not in sys.argv[1]:
+    print("Config file must be .yml or .yaml")
+    sys.exit()
 
-client = commands.Bot(command_prefix=config.PREFIX)
+with open(sys.argv[1]) as config_file:
+    config = yaml.load(config_file)
+
+client = commands.Bot(command_prefix=config.get("command_prefix"))
 reddit = REDDIT()
 youtube = YOUTUBE()
-clash = CLASHOFCLANS()
 
 
 def log(message, author):
     t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
-    file = open('log.txt', 'a')
-    file.write('\n{} {} [{}]'.format(t, str(message), str(author)))
-    file.close()
+    with open('log.txt', 'a') as logfile:
+        logfile.write('\n{} {} [{}]'.format(t, str(message), str(author)))
 
 
 @client.event
@@ -119,29 +118,19 @@ async def queue(ctx, url=None):
 
     # plays the song
     song = youtube.pop_queue()
-    voice.play(audio(song))
+    voice.play(FFmpegPCMAudio(song))
     await ctx.send(f"Playing: {song}")
 
 
 @client.command(pass_context=True)
 async def skip(ctx):
     log(ctx.message.content, ctx.message.author)
-    voice.stop()
-    await ctx.send("Skipping...")
-    song = youtube.pop_queue()
-    await ctx.send(f"Playing: {song}")
-    voice.play(audio(song))
-    
-
-@client.command(pass_context=True)
-async def clan(ctx, param=None):
-    log(ctx.message.content, ctx.message.author)
-    if param == "war":
-        await ctx.send(clash.get_war_details())
-    elif param == "members":
-        await ctx.send(clash.get_clan_members())
-    else:
-        await ctx.send(f"Usage: `{config.PREFIX}clan [war/members]`")
+    await ctx.send("This command is currently unavailable")
+    # voice.stop()
+    # await ctx.send("Skipping...")
+    # song = youtube.pop_queue()
+    # await ctx.send(f"Playing: {song}")
+    # voice.play(FFmpegPCMAudio(song))
 
 
 @client.command(pass_context=True)
@@ -153,7 +142,8 @@ async def stop(ctx):
 
 
 def main():
-    client.run(BOT_TOKEN)
+    bot_token = config.get("discord").get("bot_token")
+    client.run(bot_token)
 
 
 if __name__ == '__main__':

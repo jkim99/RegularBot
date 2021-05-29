@@ -17,16 +17,20 @@ The bot uses the following Python packages. Versions can be found in `requiremen
 ## Setup
 If Python 3 is successfully installed, you can set up the bot as follows:
 1. Clone the git repository  
-`git clone <url>`
+   `git clone <url>`
 2. Change to the root directory and create a virtual environment  
-`cd RegularBot`  
-`python3 -m venv venv`
+   `cd RegularBot`  
+   `python3 -m venv venv`
 3. Activate the virtual environment and install dependencies.  
-`. venv/bin/activate`  
-`pip install -r requirements.txt`
-
-## Clash of Clans
-`pip3 install arrow`<br />
+   `. venv/bin/activate`  
+   `pip install -r requirements.txt`  
+4. Edit the config file `config.yaml` and supply credentials.  
+   _WARNING_: Do not use a configuration from an untrusted source. Code injection can maliciously call any function
+   in Python.  
+5. Start screen to run this application in the background  
+   `screen`
+5. Run the bot by passing `config.yaml` to the program  
+`python3 regular.py <config-file>`  
 
 ## Postgres
 You must install Postgres on your system. <br />
