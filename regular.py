@@ -24,6 +24,7 @@ with open(sys.argv[1]) as config_file:
     config = yaml.load(config_file)
 
 client = commands.Bot(command_prefix=config.get("command_prefix"))
+
 reddit = REDDIT()
 youtube = YOUTUBE()
 
@@ -59,20 +60,6 @@ async def shutdown(ctx):
     youtube.clear_mp3()
     await ctx.send('Stopping...')
     await client.logout()
-
-
-@client.command(pass_context=True, aliases=['suggest', 'suggestions', 'sug'])
-async def suggestion(ctx):
-    log(ctx.message.content, ctx.message.author)
-
-    cmd = ctx.message.content.split()[0].replace(config.PREFIX, "")
-
-    t = datetime.today().strftime('[%Y-%m-%d-%H:%M]')
-    file = open('suggestions.txt', 'a')
-    content = ctx.message.content.replace(config.PREFIX + cmd, '')
-    file.write('\n{}{} [{}]'.format(t, content, str(ctx.message.author)))
-    file.close()
-    await ctx.send('Thank you for the suggestion!')
 
 
 @client.command(pass_context=True, aliases=['lq'])
