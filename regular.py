@@ -98,7 +98,7 @@ async def queue(ctx, url=None):
 
     # downloads and queues song if url exists
     if url:
-        youtube.queue_song(url)
+        youtube.enqueue(url)
     else:
         await ctx.send(f"Usage: `{config.PREFIX}play [youtube url]`")
         return

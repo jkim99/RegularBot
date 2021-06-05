@@ -6,7 +6,7 @@ class YOUTUBE:
     def __init__(self):
         self.queue = []
 
-    def queue_song(self, url):
+    def enqueue(self, url):
         self.queue.append(self.download(url))
 
     def pop_queue(self):
@@ -34,10 +34,3 @@ class YOUTUBE:
 
     def print_queue(self):
         return str(self.queue)
-
-
-if __name__ == '__main__':
-    y = YOUTUBE()
-    y.queue_song('https://www.youtube.com/watch?v=sf7CXcpJTj0')
-    y.download()
-    y.clear_mp3()
